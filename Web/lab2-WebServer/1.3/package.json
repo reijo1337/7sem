@@ -1,0 +1,16 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "simple http-server",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "author": "Grigory Tantsevov",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.15.5"
+  },
+  "devDependencies": {}
+}

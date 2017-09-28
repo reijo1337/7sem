@@ -141,6 +141,13 @@ print(r.headers)
 print(r.text)
 print('\n')
 
+print('post on wall')
+r = requests.post('https://api.vk.com/method/wall.post?access_token=9671fb97184e9386e9d5019c2786666795998b0fa9cfa9fd14929f8c54968d3cf5cb56ed7c90ee5eb414d&v=5.68&owner_id=57882784&message=Ну и что дальше?')
+print(r.status_code)
+print(r.headers)
+print(r.text)
+print('\n')
+
 print('PUT')
 print('\n')
 
