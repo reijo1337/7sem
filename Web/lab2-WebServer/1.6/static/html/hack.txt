@@ -1,0 +1,5 @@
+<head></head>
+<body>
+	<h1>I can hack you back in time. Just like a time machine.</h1>
+	<p><img src="html/data/hackerman.jpg" alt="Hackerman. He's the most powerful hacker of all time."></p>
+</body>
