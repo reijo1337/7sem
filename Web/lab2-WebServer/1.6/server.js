@@ -39,17 +39,18 @@ app.get('/img',
 		res.sendFile(__dirname + '/static/img/img.jpg')
 	});
 
-app.post('/file',
-	function(req, res) {
-		fs.writeFile(__dirname + '/static/file.txt', 'Hello Node.js', (err) => {
-			if (err) throw err;
-		});
-		res.send("File was created or rewrited");
+app.post('/file', function (req,res) {
+    let pathtofile = __dirname+'/test.txt';
+
+    fs.writeFile(pathtofile,JSON.stringify(req.body), (err) => {
+        if (err) throw err;
+    	});
+
+    res.send("file created");
 	});
 
-app.get('/file',
-	function(req, res) {
-		res.sendFile(__dirname + '/static/html/file.txt')
+app.get('/file', function (req,res) {
+    res.sendFile(__dirname+'/test.txt');
 	});
 
 var server = app.listen(8080, 
