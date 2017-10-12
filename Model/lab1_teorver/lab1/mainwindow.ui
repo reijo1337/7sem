@@ -6,12 +6,12 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1100</width>
-    <height>473</height>
+    <width>1112</width>
+    <height>901</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Экспоненциальное распределение</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QCustomPlot" name="m_func" native="true">
@@ -60,7 +60,7 @@
      <string>Плотность вероятности</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>0</x>
@@ -92,6 +92,12 @@
           <number>4</number>
          </property>
          <property name="minimum">
+          <double>0.000100000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.500000000000000</double>
+         </property>
+         <property name="value">
           <double>1.000000000000000</double>
          </property>
         </widget>
@@ -156,6 +162,52 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>880</y>
+      <width>181</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Функция распределения</string>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="m_func_2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>470</y>
+      <width>550</width>
+      <height>400</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QCustomPlot" name="m_plot_2" native="true">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>470</y>
+      <width>550</width>
+      <height>400</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>740</x>
+      <y>880</y>
+      <width>171</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Плотность вероятности</string>
+    </property>
    </widget>
   </widget>
  </widget>
