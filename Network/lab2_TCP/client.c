@@ -10,7 +10,7 @@
 
 #include <unistd.h>
 
-#define BUF_SIZE 10000
+#define BUF_SIZE 128
 
 int main(int argc, char **argv) {
 	int Socket = socket(AF_INET, SOCK_STREAM, 0);
@@ -38,6 +38,12 @@ int main(int argc, char **argv) {
 	{
 		msg[i] = c;
 		i++;
+		if (i == 127) {
+			msg[i] = '\0';
+			send(Socket, msg, sizeof(msg), MSG_NOSIGNAL);
+			i = 0;
+			sleep(1);
+		}
 	}
 	msg[i] = '\0';
 
