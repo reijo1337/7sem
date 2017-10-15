@@ -12,11 +12,7 @@
 #include <string.h>
 
 #define BUFF_SIZE 128
-#define TRUE 1
-#define FALSE 0
 
-void socket_write();
-void socket_read();
 void sigint_handler();
 
 int main(int argc, char* argv[]) {
@@ -66,7 +62,7 @@ int main(int argc, char* argv[]) {
         exit(errno);
     }
             
-    while(TRUE) {
+    while(1) {
         memset(buff, 0, BUFF_SIZE);
         
         if(recvfrom(sock_fd, buff, BUFF_SIZE, 0, (struct sockaddr*) &remote_addr, &addr_len) < 0) {
@@ -86,6 +82,6 @@ int main(int argc, char* argv[]) {
 }
 
 void sigint_handler() {
-    printf("ubijam procesy\n");
+    printf("ai bol'no v noge\n");
     exit(EXIT_SUCCESS);
 }

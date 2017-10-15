@@ -55,6 +55,8 @@ int main(int argc, char **argv) {
 
 	listen(MasterSocket, SOMAXCONN);
 
+	printf("Server started\n\n");
+
 	while(true) {
 		fd_set Set;		// 1024 битов {0, 1}. Если добавляется фд с номером 4, то 4ый бит устанавливается в 1.
 		FD_ZERO(&Set);	// обнуление

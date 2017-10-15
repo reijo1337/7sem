@@ -12,8 +12,6 @@
 #include <string.h>
 
 #define BUFF_SIZE 128
-#define TRUE 1
-#define FALSE 0
 
 void socket_write();
 void socket_read();
@@ -88,7 +86,7 @@ void socket_write() {
 void socket_read() {
     char* buff = malloc(BUFF_SIZE);
     
-    while(TRUE) {
+    while(1) {
         memset(buff, 0, BUFF_SIZE);
         if(recv(sock_fd, buff, BUFF_SIZE, 0) < 0) {
             perror("recv()");
@@ -100,6 +98,6 @@ void socket_read() {
 }
 
 void sigint_handler() {
-    printf("ubijam procesy\n");
+    printf("v solyanogo niyaaaaaaa\n");
     exit(EXIT_SUCCESS);
 }
