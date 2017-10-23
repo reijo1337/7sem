@@ -94,7 +94,7 @@ void MainWindow::on_pushButton_clicked()
 
     QString result = "";
     for (int i = 0; i < size; i++) {
-        result += "t" + QString::number(i) + " = " + QString::number(res[i]) + "\n";
+        result += "p(" + QString::number(i+1) + ") = " + QString::number(res[i]) + "\n";
     }
 
     QMessageBox msg;
