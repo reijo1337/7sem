@@ -29,10 +29,6 @@ func handleConnection(conn net.Conn) {
 			conn.Write([]byte("You enter " + text + "\n\r"))
 
 			reqNum, _ := strconv.Atoi(text)
-			if reqNum <= 0 {
-				conn.Write([]byte("Index out of range"))
-				return
-			}
 
 			file, err := os.Open("ip")
 			if err != nil {
@@ -47,6 +43,7 @@ func handleConnection(conn net.Conn) {
 				ipAdr := fileScanner.Text()
 				i++
 				if i == reqNum {
+					fmt.Println(ipAdr)
 					splitedIP := strings.Split(ipAdr, ".")
 
 					// Вывод в двоичном виде
@@ -75,10 +72,9 @@ func handleConnection(conn net.Conn) {
 						conn.Write([]byte("." + strconv.FormatInt(int64(intPart), 16)))
 					}
 					conn.Write([]byte("\n"))
-					return
+					continue
 				}
 			}
-			conn.Write([]byte("Index out of range"))
 		}
 	}
 }

@@ -48,8 +48,8 @@ int main(int argc, char* argv[]) {
     }
     
     if(!f_port) {
-        printf("No -p param. Using port 31337\n");
-        dest_addr.sin_port = htons(31337);
+        printf("No -p param. Using port 8080\n");
+        dest_addr.sin_port = htons(8080);
     }
     
     if((sock_fd=socket(AF_INET, SOCK_STREAM, IPPROTO_TCP)) == ERROR) {
