@@ -4,18 +4,22 @@
 #include "randomgenerator.h"
 #include "base.h"
 
-class Processor : public BaseGenerator, BaseReceiver
+class Processor : public QObject
 {
+    Q_OBJECT
+signals:
+    void sendReques();
+
 public slots:
     void receiveRequest();
 
 public:
     Processor(RandomGenerator *gen);
 
-    double nextGenerationPeriod() override {return 0.0;}
-    double nextProcessingPeriod() override;
+    double nextGenerationPeriod() {return 0.0;}
+    double nextProcessingPeriod();
 
-    void Process(double part) override;
+    void Process(double part);
 
     int qsize() const;
 

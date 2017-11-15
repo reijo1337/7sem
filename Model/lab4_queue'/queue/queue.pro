@@ -28,12 +28,14 @@ SOURCES += main.cpp\
     randomgenerator.cpp \
     generator.cpp \
     base.cpp \
-    processor.cpp
+    processor.cpp \
+    manager.cpp
 
 HEADERS  += mainwindow.h \
     randomgenerator.h \
     generator.h \
     base.h \
-    processor.h
+    processor.h \
+    manager.h
 
 FORMS    += mainwindow.ui

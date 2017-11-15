@@ -1,15 +1,24 @@
 #ifndef GENERATOR_H
 #define GENERATOR_H
 
-#include "base.h"
+#include <QObject>
 #include "randomgenerator.h"
 
-class Generator : public BaseGenerator
+class Generator : public QObject
 {
+    Q_OBJECT
+signals:
+    void sendReques();
+
 public:
     Generator(RandomGenerator *gen) : m_gen(gen) {}
 
-    double nextGenerationPeriod() override;
+    double nextGenerationPeriod();
+
+
+    void emitRequest() {
+        emit sendReques();
+    }
 
 private:
     RandomGenerator *m_gen;

@@ -17,12 +17,12 @@ double RandomGenerator::ravnRand()
 
 double RandomGenerator::expRand()
 {
-    return -1.0 / m_lambda * exp(1 - myRand());
+    return -1.0 / m_lambda * log(1 - myRand());
 }
 
 double RandomGenerator::myRand()
 {
-    int accuracy = 17;
+    int accuracy = 9;
     double a = 0;
     a = (qrand() % int (qPow(10, accuracy) + 1))/qPow(10, accuracy);
     return a;

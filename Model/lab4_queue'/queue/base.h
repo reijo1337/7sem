@@ -11,6 +11,9 @@ signals:
 
 public:
     virtual double nextGenerationPeriod() = 0;
+    void emitRequest() {
+        emit sendReques();
+    }
 };
 
 class BaseReceiver : public QObject
