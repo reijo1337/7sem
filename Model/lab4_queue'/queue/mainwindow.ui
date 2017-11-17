@@ -113,7 +113,11 @@
          </widget>
         </item>
         <item>
-         <widget class="QDoubleSpinBox" name="m_lambda"/>
+         <widget class="QDoubleSpinBox" name="m_lambda">
+          <property name="singleStep">
+           <double>0.010000000000000</double>
+          </property>
+         </widget>
         </item>
        </layout>
       </item>
@@ -201,7 +205,14 @@
         </widget>
        </item>
        <item>
-        <widget class="QDoubleSpinBox" name="m_retP"/>
+        <widget class="QDoubleSpinBox" name="m_retP">
+         <property name="maximum">
+          <double>1.000000000000000</double>
+         </property>
+         <property name="singleStep">
+          <double>0.010000000000000</double>
+         </property>
+        </widget>
        </item>
       </layout>
      </item>
