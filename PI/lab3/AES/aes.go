@@ -8,7 +8,6 @@ type cypher struct {
 	rounds int
 }
 
-// Rotate word left 1 byte
 func rotw(w []byte) {
 	temp := w[0]
 	w[0] = w[1]
@@ -17,43 +16,35 @@ func rotw(w []byte) {
 	w[3] = temp
 }
 
-// Returns substitute byte according to Rijndael's S-box
 func getSboxSub(b byte) byte {
 	return sbox[b]
 }
 
-// Returns substitute byte according to Rijndael's inverse S-box
 func getInvSboxSub(b byte) byte {
 	return rsbox[b]
 }
 
-// Substitutes each byte according to Rijndael's S-box
 func subBytes(s []byte) {
 	for i, v := range s {
 		s[i] = getSboxSub(v)
 	}
 }
 
-// Substitutes each byte according to Rijndael's inverse S-box
 func subBytesInv(s []byte) {
 	for i, v := range s {
 		s[i] = getInvSboxSub(v)
 	}
 }
 
-// Returns round constant
-// Pre: 0 < round <= 10
 func getRcon(round int) byte {
 	return rcon_const[round-1]
 }
 
-// Expands key according to the Rijndael key schedule
-// Pre: key is 16, 24 or 32 bytes in length
+// Расписание ключей
 func expandKey(key []byte) []byte {
 	nk := len(key) / 4
 	xKey := make([]byte, 16*(rounds[len(key)]+1))
 
-	// Beginning of the expanded key is the same
 	i := 0
 	for ; i < nk; i++ {
 		xKey[(4*i)+0] = key[(4*i)+0]
@@ -70,14 +61,10 @@ func expandKey(key []byte) []byte {
 		temp[3] = xKey[4*(i-1)+3]
 
 		if i%nk == 0 {
-			// Rotate word
 			rotw(temp)
-			// Sub word
 			subBytes(temp)
-			// Rcon
 			temp[0] = temp[0] ^ getRcon(i/nk)
 		} else if nk > 6 && i%nk == 4 {
-			// Sub word
 			subBytes(temp)
 		}
 		xKey[(4*i)+0] = xKey[4*(i-nk)+0] ^ temp[0]
@@ -88,14 +75,14 @@ func expandKey(key []byte) []byte {
 	return xKey
 }
 
-// Adds (xor) state to round key
+// добавляет (xor) к состоянию ключ текущего раунда
 func addRoundKey(s, w []byte) {
 	for i, v := range s {
 		s[i] = v ^ w[i]
 	}
 }
 
-// Shifts rows to the right, by one more byte for each row
+// Сдвиг строки
 func shiftRows(s []byte) {
 	t := make([]byte, 4)
 	for i := 0; i < 4; i++ {
@@ -111,7 +98,7 @@ func shiftRows(s []byte) {
 	}
 }
 
-// Shifts rows to the left, by one more byte for each row
+// Инверсированное свдижение столбцов
 func shiftRowsInv(s []byte) {
 	t := make([]byte, 4)
 	for i := 0; i < 4; i++ {
@@ -127,7 +114,7 @@ func shiftRowsInv(s []byte) {
 	}
 }
 
-// Galois Field (2^8) Multiplication of two Bytes
+// Умножение двух байтов в поле GF(2^8)
 func gfMul(a, b byte) byte {
 	var prod byte = 0
 	var h byte
@@ -145,7 +132,7 @@ func gfMul(a, b byte) byte {
 	return prod
 }
 
-// Mix columns as coefficients of a polynomial over Rijndael's Galois field
+// Умножение столбцов
 func mixColumns(s []byte) {
 	a := make([]byte, 4)
 	for i := 0; i < 4; i++ {
@@ -161,7 +148,7 @@ func mixColumns(s []byte) {
 	}
 }
 
-// Inverse of mix columns
+// Инверсированное умножение столбцов
 func mixColumnsInv(s []byte) {
 	a := make([]byte, 4)
 	for i := 0; i < 4; i++ {
@@ -177,13 +164,13 @@ func mixColumnsInv(s []byte) {
 	}
 }
 
-// Encrypts one 16 byte block in place in memory
+// Зашифровка блока
 func (c *cypher) encryptBlock(s []byte) {
-	addRoundKey(s, c.xkey)
+	addRoundKey(s, c.xkey)							// добавление ключа к блоку
 	for i := 1; i < c.rounds; i++ {
-		subBytes(s)
-		shiftRows(s)
-		mixColumns(s)
+		subBytes(s)									// Замена байтов по таблице
+		shiftRows(s)								// Cвдиг строк
+		mixColumns(s)								// Умножение столбцов
 		addRoundKey(s, c.xkey[i*16:])
 	}
 
@@ -192,7 +179,7 @@ func (c *cypher) encryptBlock(s []byte) {
 	addRoundKey(s, c.xkey[len(c.xkey)-16:])
 }
 
-// Decrypts one 16 byte block in place in memory
+// Расшифровка блока
 func (c *cypher) decryptBlock(s []byte) {
 	addRoundKey(s, c.xkey[len(c.xkey)-16:])
 	for i := 1; i < c.rounds; i++ {
@@ -207,9 +194,8 @@ func (c *cypher) decryptBlock(s []byte) {
 	addRoundKey(s, c.xkey)
 }
 
-// Returns pointer to new cypher
+// Создание нового шифровщика
 func NewCypher(key []byte) (*cypher, error) {
-	// Check key length
 	if len(key) != 16 && len(key) != 24 && len(key) != 32 {
 		return nil, errors.New("incorrect key length, must be 16, 24 or 32 bytes")
 	}
@@ -217,9 +203,8 @@ func NewCypher(key []byte) (*cypher, error) {
 	return &cypher{key, expandKey(key), rounds[len(key)]}, nil
 }
 
-// Returns src encrypted using aes with key key
+// Шифровка слайса байтов
 func (c *cypher) Encrypt(src []byte) []byte {
-	// Calculate length of src with padding
 	length := len(src)
 	if length%16 != 0 {
 		length = 16 * (len(src)/16 + 1)
@@ -233,7 +218,7 @@ func (c *cypher) Encrypt(src []byte) []byte {
 	return b
 }
 
-// Removes 0x00s at the end of b
+// Убирает нули
 func removePadding(b []byte) []byte {
 	idx := 0
 	for i := len(b) - 1; i >= 0; i-- {
@@ -245,8 +230,7 @@ func removePadding(b []byte) []byte {
 	return b[:idx]
 }
 
-// Returns src decrypted using aes with key key
-// Will throw an error is len(src) isn't a multiple of 16
+// Дешифровка сообщений
 func (c *cypher) Decrypt(src []byte) ([]byte, error) {
 	if len(src)%16 != 0 {
 		return nil, errors.New("source is an incorrect length, must be a multiple of 16 bytes")
