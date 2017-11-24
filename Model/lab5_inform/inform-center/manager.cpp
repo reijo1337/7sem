@@ -57,3 +57,14 @@ double Manager::deniedCoef()
 {
     return m_clients->deniedCoef();
 }
+
+void Manager::setOpsTimes(double min1, double max1, double min2, double max2, double min3, double max3)
+{
+    m_operators->setOpsTimes(min1, max1, min2, max2, min3, max3);
+}
+
+void Manager::setCompsTime(double comp1, double comp2)
+{
+    m_firstComp->setTime(comp1);
+    m_secondComp->setTime(comp2);
+}

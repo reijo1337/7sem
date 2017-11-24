@@ -6,7 +6,7 @@ void Computer::recvRequest()
     m_queue++;
 }
 
-Computer::Computer(int time)
+Computer::Computer(double time)
 {
     m_serveTime = time;
     m_currentTime = 0;
@@ -27,4 +27,9 @@ void Computer::proc()
 bool Computer::done()
 {
     return (m_queue == 0) && (m_currentTime <= 0);
+}
+
+void Computer::setTime(double time)
+{
+    m_serveTime = time;
 }

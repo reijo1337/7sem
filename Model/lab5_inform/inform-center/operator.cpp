@@ -35,6 +35,16 @@ void Operator::proc()
     }
 }
 
+void Operator::setMinTime(double minTime)
+{
+    m_minTime = minTime;
+}
+
+void Operator::setMaxTime(double maxTime)
+{
+    m_maxTime = maxTime;
+}
+
 void Operators::recvForFreeOp()
 {
     int num = -1;
@@ -79,4 +89,14 @@ bool Operators::done()
         ret &= op->isFree();
 
     return ret;
+}
+
+void Operators::setOpsTimes(double min1, double max1, double min2, double max2, double min3, double max3)
+{
+    m_ops[0]->setMinTime(min1);
+    m_ops[0]->setMaxTime(max1);
+    m_ops[1]->setMinTime(min2);
+    m_ops[1]->setMaxTime(max2);
+    m_ops[2]->setMinTime(min3);
+    m_ops[2]->setMaxTime(max3);
 }

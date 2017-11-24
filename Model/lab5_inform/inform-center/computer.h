@@ -10,15 +10,17 @@ public slots:
     void recvRequest();
 
 public:
-    Computer(int time);
+    Computer(double time);
 
     void proc();
 
     bool done();
 
+    void setTime(double time);
+
 private:
     int m_queue;
-    int m_serveTime;
+    double m_serveTime;
     double m_currentTime;
 };
 

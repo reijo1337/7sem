@@ -18,6 +18,10 @@ public:
     void recvRequest();
     void proc();
 
+    void setMinTime(double minTime);
+
+    void setMaxTime(double maxTime);
+
 private:
     bool m_isFree;
     double m_minTime;
@@ -43,6 +47,8 @@ public:
     void proc();
 
     bool done();
+
+    void setOpsTimes(double min1, double max1, double min2, double max2, double min3, double max3);
 
 private:
     QVector<Operator *> m_ops;

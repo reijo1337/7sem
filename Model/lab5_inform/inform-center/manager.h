@@ -18,6 +18,12 @@ public:
 
     double deniedCoef();
 
+    void setOpsTimes(double min1, double max1,
+                     double min2, double max2,
+                     double min3, double max3);
+
+    void setCompsTime(double comp1, double comp2);
+
 private:
     Clients *m_clients;
     Operators *m_operators;
