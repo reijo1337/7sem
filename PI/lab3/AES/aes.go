@@ -24,6 +24,7 @@ func getInvSboxSub(b byte) byte {
 	return rsbox[b]
 }
 
+// Подстановка байтов из таблицы
 func subBytes(s []byte) {
 	for i, v := range s {
 		s[i] = getSboxSub(v)
@@ -40,12 +41,13 @@ func getRcon(round int) byte {
 	return rcon_const[round-1]
 }
 
-// Расписание ключей
+// Вычисление раундовых ключей (расширение ключа)
 func expandKey(key []byte) []byte {
 	nk := len(key) / 4
 	xKey := make([]byte, 16*(rounds[len(key)]+1))
 
 	i := 0
+
 	for ; i < nk; i++ {
 		xKey[(4*i)+0] = key[(4*i)+0]
 		xKey[(4*i)+1] = key[(4*i)+1]
@@ -64,7 +66,7 @@ func expandKey(key []byte) []byte {
 			rotw(temp)
 			subBytes(temp)
 			temp[0] = temp[0] ^ getRcon(i/nk)
-		} else if nk > 6 && i%nk == 4 {
+		} else if nk == 8 && i%nk == 4 {
 			subBytes(temp)
 		}
 		xKey[(4*i)+0] = xKey[4*(i-nk)+0] ^ temp[0]
@@ -98,7 +100,6 @@ func shiftRows(s []byte) {
 	}
 }
 
-// Инверсированное свдижение столбцов
 func shiftRowsInv(s []byte) {
 	t := make([]byte, 4)
 	for i := 0; i < 4; i++ {
