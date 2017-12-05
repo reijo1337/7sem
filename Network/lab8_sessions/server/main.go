@@ -23,11 +23,6 @@ func handleConnection(conn net.Conn) {
 	FreeID = FreeID[1:]
 
 	for {
-		err := conn.SetDeadline(time.Now().Add(dT * time.Second))
-		if err != nil {
-			panic(err)
-		}
-
 		out, err := bufio.NewReader(conn).ReadString('\n')
 		out = strings.Replace(out, "\n", "", -1)
 
@@ -41,10 +36,7 @@ func handleConnection(conn net.Conn) {
 
 		fmt.Println(name, "send", out)
 
-		err = conn.SetDeadline(time.Now().Add(dT * time.Second))
-		if err != nil {
-			panic(err)
-		}
+		time.Sleep(time.Second * dT)
 	}
 }
 
