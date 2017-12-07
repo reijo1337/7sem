@@ -11,8 +11,10 @@ func main() {
 	}
 	defer conn.Close()
 
-	for {
+	for i := 0; i < 5; i++ {
 		fmt.Fprintln(conn, "check")
 		time.Sleep(4 * time.Second)
 	}
+
+	time.Sleep(8 * time.Second)
 }

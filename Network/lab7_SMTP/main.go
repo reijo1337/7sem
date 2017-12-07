@@ -34,7 +34,7 @@ func main() {
 	m := gomail.NewMessage()
 	m.SetHeader("From", "tantsevov@yandex.ru")
 	m.SetHeader("To", "tantsevov@gmail.com")
-	m.SetHeader("Subject", "test!")
+	m.SetHeader("Subject", "Testing message for smtp")
 	m.SetBody("text/html", body)
 
 	d := gomail.NewDialer("smtp.yandex.ru", 465, "tantsevov", Password)

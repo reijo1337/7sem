@@ -16,6 +16,7 @@ func handleConnection(conn net.Conn) {
 	if len(FreeID) == 0 {
 		conn.Write([]byte("There is no free ID"))
 		conn.Close()
+		fmt.Println(name, "connection close because of no free ID")
 		return
 	}
 
