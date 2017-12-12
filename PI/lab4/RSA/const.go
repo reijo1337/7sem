@@ -6,6 +6,6 @@ const (
 )
 
 // Exp is a first 4 values of Frema numbers
-var Exp = [3]int64{
-	17, 257, 65357,
+var Exp = [2]int64{
+	257, 65357,
 }

@@ -8,7 +8,8 @@ import (
 )
 
 func getE(euler *big.Int) *big.Int {
-	return big.NewInt(Exp[numRand.Intn(3)])
+	i := Exp[numRand.Intn(2)]
+	return big.NewInt(i)
 }
 
 func getKeys() (e, d, n *big.Int) {
