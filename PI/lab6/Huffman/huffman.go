@@ -3,13 +3,17 @@ package main
 import (
 	"bytes"
 	"container/heap"
+	"encoding/json"
+	"fmt"
+	"os"
 	"strconv"
 )
 
 type Huffman struct {
-	count map[byte]int
-	pq    PriorityQueue
-	tree  *Node
+	count  map[byte]int
+	pq     PriorityQueue
+	tree   *Node
+	ignore int
 }
 
 func NewHuffman(data []byte) *Huffman {
@@ -38,7 +42,7 @@ func NewHuffman(data []byte) *Huffman {
 		}
 		i++
 	}
-	return &Huffman{count, pq, nil}
+	return &Huffman{count, pq, nil, 0}
 }
 
 type Node struct {
@@ -87,6 +91,44 @@ func (h *Huffman) makeTree() *Node {
 	return ret
 }
 
+func (h *Huffman) writeTree(fileDeComp *os.File, fi os.FileInfo) {
+	data, _ := json.Marshal(h.count)
+	fmt.Fprintln(fileDeComp, data)
+}
+
+func (h *Huffman) readTree() {
+	file, err := os.Open(os.Args[1] + ".comp")
+	if err != nil {
+		panic(err)
+	}
+	defer file.Close()
+
+	data := make([]byte, 0)
+	fmt.Fscanln(file, data)
+
+	var count map[byte]int
+
+	json.Unmarshal(data, &count)
+	pq := make(PriorityQueue, len(count))
+	i := 0
+	for value, priority := range count {
+		valNode := &Node{
+			left:  nil,
+			right: nil,
+			val:   value,
+			count: priority,
+		}
+		pq[i] = &Item{
+			value:    valNode,
+			priority: priority,
+			index:    i,
+		}
+		i++
+	}
+	h.count = count
+	h.pq = pq
+}
+
 func (h *Huffman) compress(data []byte) []byte {
 	root := h.makeTree()
 	root.buildCode("")
@@ -104,7 +146,7 @@ func (h *Huffman) compress(data []byte) []byte {
 		byteString = append(byteString, str[i*8:(i+1)*8])
 	}
 	byteString = append(byteString, str[i*8:])
-
+	h.ignore = 8 - len(str[i*8:])
 	ret := make([]byte, 0)
 
 	for _, v := range byteString {
@@ -123,7 +165,7 @@ func (h *Huffman) decompress(data []byte) []byte {
 	ret := make([]byte, 0)
 	r := New(bytes.NewBuffer(data))
 
-	for i := 0; i < len(data); i++ {
+	for i := 0; i < len(data)-1; i++ {
 		for j := 0; j < 8; j++ {
 			bit, _ := r.ReadBit()
 			if bit {
@@ -136,6 +178,24 @@ func (h *Huffman) decompress(data []byte) []byte {
 				ret = append(ret, node.val)
 				node = h.tree
 			}
+		}
+	}
+
+	for j := 0; j < 8; j++ {
+		if j < h.ignore {
+			r.ReadBit()
+			continue
+		}
+		bit, _ := r.ReadBit()
+		if bit {
+			node = node.right
+		} else {
+			node = node.left
+		}
+
+		if node.left == nil && node.right == nil {
+			ret = append(ret, node.val)
+			node = h.tree
 		}
 	}
 

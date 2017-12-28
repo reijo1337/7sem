@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bytes"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -34,8 +33,13 @@ func main() {
 	}
 	defer fileComp.Close()
 
+	fmt.Fprintln(fileComp, huffman.ignore)
+	huffman.writeTree(fileComp, filestat)
 	fileComp.Write(compressed)
 
+	fmt.Fscanln(fileComp, huffman.ignore)
+	fileComp.Close()
+	huffman.readTree()
 	decompressed := huffman.decompress(compressed)
 	fileDeComp, err := os.OpenFile(os.Args[1]+".decomp", os.O_WRONLY|os.O_CREATE, filestat.Mode())
 	if err != nil {
@@ -44,10 +48,4 @@ func main() {
 	defer fileDeComp.Close()
 
 	fileDeComp.Write(decompressed)
-
-	if bytes.Compare(data, decompressed) == 0 {
-		fmt.Println("OK")
-	} else {
-		fmt.Println("Not OK")
-	}
 }
